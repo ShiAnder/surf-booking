@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 25, 42, 86; /* Adjusted foreground color to a darker shade */
+  --background-rgb: 255, 255, 255;
+  --accent-color: 0, 123, 255; /* Changed to blue accent color */
+}
+
+body {
+  font-family: 'Roboto', sans-serif; /* Changed to Roboto font */
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Card hover animation */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-8px) scale(1.05); /* Increased hover effect */
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08); /* Slightly deeper shadow */
+}
+
+/* Button hover transition */
+.btn-animate {
+  transition: all 0.25s ease-in-out; /* Faster transition */
+}
+.btn-animate:hover {
+  transform: translateY(-5px); /* Increased hover translation */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12); /* More pronounced shadow */
+}
+
+/* Hero underline animation */
+.underline-animate {
+  position: relative;
+}
+.underline-animate::after {
+  content: '';
+  display: block;
+  height: 0.35em;
+  background-color: var(--accent-color);
+  position: absolute;
+  bottom: 0.15em;
+  left: 0;
+  width: 100%;
+  transform: rotate(-2deg);
+  z-index: -1;
+}
+
+/* Custom animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px); /* Increased floating movement */
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(0) translateZ(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(-30%) translateZ(0) scaleY(0.9); /* Increased wave movement */
+  }
+  100% {
+    transform: translateX(-60%) translateZ(0) scaleY(1);
+  }
+}
+.animate-wave {
+  animation: wave 15s linear infinite; /* Slower wave animation */
+}
+
+/* Custom utility classes */
+.text-shadow {
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.12); /* Enhanced text shadow */
+}
+.text-shadow-lg {
+  text-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Larger text shadow */
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.85); /* Slightly more opaque */
+  backdrop-filter: blur(10px); /* Increased blur effect */
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.20); /* Lighter border */
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Global Transitions */
+* {
+  transition: all 0.3s ease-in-out; /* Global smooth transitions */
+}
+
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-slideDown {
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
