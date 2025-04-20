@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaCalendarAlt, FaClock, FaDollarSign, FaBookOpen } from 'react-icons/fa';
 
@@ -10,7 +10,35 @@ export default function LessonCard({ lesson }) {
   const [bookingDate, setBookingDate] = useState('');
   const [bookingTime, setBookingTime] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [bookedSlots, setBookedSlots] = useState({});
+  const [isLoadingSlots, setIsLoadingSlots] = useState(false);
   const router = useRouter();
+
+  // Fetch already booked slots when component mounts
+  useEffect(() => {
+    const fetchBookedSlots = async () => {
+      setIsLoadingSlots(true);
+      try {
+        const response = await fetch(`/api/bookings/booked-slots?lessonId=${lesson.id}`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch booked slots');
+        }
+        
+        const data = await response.json();
+        
+        // Transform the data into a more efficient lookup structure
+        // Example format: { "2025-04-20": ["09:00 AM", "11:00 AM"], "2025-04-21": ["02:00 PM"] }
+        setBookedSlots(data.bookedSlots || {});
+      } catch (error) {
+        console.error('Error fetching booked slots:', error);
+      } finally {
+        setIsLoadingSlots(false);
+      }
+    };
+
+    fetchBookedSlots();
+  }, [lesson.id]);
 
   const handleBookNow = async () => {
     if (!session) {
@@ -20,6 +48,12 @@ export default function LessonCard({ lesson }) {
 
     if (!bookingDate || !bookingTime) {
       alert('Please select both date and time for your lesson');
+      return;
+    }
+
+    // Check if the slot is already booked (double-check)
+    if (isSlotBooked(bookingDate, bookingTime)) {
+      alert('This slot has just been booked. Please select another time.');
       return;
     }
 
@@ -48,86 +82,172 @@ export default function LessonCard({ lesson }) {
     }
   };
 
+  // Function to check if a specific date/time slot is booked
+  const isSlotBooked = (date, time) => {
+    return bookedSlots[date]?.includes(time);
+  };
+
+  // Handle date change
+  const handleDateChange = (e) => {
+    setBookingDate(e.target.value);
+    setBookingTime(''); // Reset time when date changes
+  };
+
+  // Get all available times
+  const allTimes = ['09:00 AM', '10:00 AM', '11:00 AM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'];
+  
+  // Get available and booked times for the selected date
+  const getTimesForSelectedDate = () => {
+    if (!bookingDate) return { available: [], booked: [] };
+    
+    const bookedTimesForDate = bookedSlots[bookingDate] || [];
+    const availableTimes = allTimes.filter(time => !bookedTimesForDate.includes(time));
+    
+    return {
+      available: availableTimes,
+      booked: bookedTimesForDate
+    };
+  };
+
+  const times = getTimesForSelectedDate();
+  const hasAvailableTimes = times.available.length > 0;
   const today = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 w-400 max-w-sm h-300 flex flex-col justify-between text-center">
-      <div>
-        <h3 className="w-200 text-2xl font-semibold text-blue-700 flex items-center gap-2 mb-2 justify-center">
-          <FaBookOpen className="text-blue-500" />
-          {lesson.title}
-        </h3>
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 w-400 max-w-sm h-300 flex flex-col justify-between text-center">
-
-        <p className="w-200 text-gray-600 mb-3">{lesson.description}</p>
-        </div>
-
-        <div className="flex items-center justify-center gap-2 text-green-600 text-lg font-bold mb-4">
-          <FaDollarSign />
-          {lesson.price}
-        </div>
-
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2 justify-center">
-              <FaCalendarAlt />
-              Select Date
-            </label>
-            <input
-              type="date"
-              min={today}
-              value={bookingDate}
-              onChange={(e) => setBookingDate(e.target.value)}
-              className="w-200 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
+    <div className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 w-[700px] mt-[20px] max-w-full sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto">
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Left Column - Lesson Details */}
+        <div className="w-full md:w-1/2 flex flex-col">
+          <div className="flex items-center justify-center mb-4">
+            <h3 className="text-xl sm:text-2xl font-semibold text-blue-700 flex items-center gap-2">
+              <FaBookOpen className="text-blue-500" />
+              {lesson.title}
+            </h3>
           </div>
+          
+          <div className="bg-gray-50 border-gray-100 rounded-xl p-4 mb-4 text-center">
+            <p className="text-gray-600 text-sm">{lesson.description}</p>
+          </div>
+          
+          <div className="flex items-center justify-center gap-3 text-green-700 text-3xl font-extrabold mt-auto bg-green-100 px-6 py-4 rounded-3xl shadow-lg">
+            <FaDollarSign className="text-4xl" />
+            {lesson.price}
+          </div>
+        </div>
+        
+        {/* Right Column - Booking Form */}
+        <div className="w-full md:w-1/2 flex flex-col mt-4 md:mt-[60px] mb-[30px]">
+          {isLoadingSlots ? (
+            <div className="text-center text-gray-500">
+              Loading available slots...
+            </div>
+          ) : (
+            <>
+              <div className="mb-04 w-[200px] items-center justify-center mx-auto">
+                <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <FaCalendarAlt className="text-blue-500" />
+                  Select Date
+                </label>
+                <input
+                  type="date"
+                  min={today}
+                  value={bookingDate}
+                  onChange={handleDateChange}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+      
+              <div className="mb-4 w-[200px] items-center justify-center mx-auto">
+                <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <FaClock className="text-blue-500" />
+                  Select Time
+                </label>
+                {bookingDate && (
+                  <>
+                    {hasAvailableTimes ? (
+                      <select
+                      value={bookingTime}
+                      onChange={(e) => setBookingTime(e.target.value)}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                      <option value="">Select time</option>
+                      {allTimes.map((time) => {
+                        const isBooked = times.booked.includes(time);
+                        const isToday = bookingDate === today;
+                        
+                        // Check if the time is within 15 minutes from now (for today's date)
+                        const isTooLateToday = isToday && (() => {
+                          const now = new Date();
+                          const [timeStr, modifier] = time.split(" ");
+                          let [hours, minutes] = timeStr.split(":").map(Number);
+                          if (modifier === "PM" && hours !== 12) hours += 12;
+                          if (modifier === "AM" && hours === 12) hours = 0;
+                          const timeDate = new Date();
+                          timeDate.setHours(hours, minutes, 0, 0);
+                          return now > new Date(timeDate.getTime() - 15 * 60 * 1000);
+                        })();
+                    
+                        const disabled = isBooked || isTooLateToday;
+                    
+                        return (
+                          <option 
+                            key={time} 
+                            value={time}
+                            disabled={disabled}
+                          >
+                            {time} {isBooked ? '(Booked)' : isTooLateToday ? '(Too late)' : ''}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    ) : (
+                      <div className="p-3 bg-red-50 text-red-600 border border-red-200 rounded-lg text-center">
+                        No available times for this date. All slots are already booked.
+                      </div>
+                    )}
+                  </>
+                )}
+                {!bookingDate && (
+                  <select
+                    disabled={true}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-500"
+                  >
+                    <option value="">Please select a date first</option>
+                  </select>
+                )}
+              </div>
+            </>
+          )}
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2 justify-center">
-              <FaClock />
-              Select Time
-            </label>
-            <select
-              value={bookingTime}
-              onChange={(e) => setBookingTime(e.target.value)}
-              className="w-00 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-              <option value="">Select time</option>
-              {['09:00 AM', '10:00 AM', '11:00 AM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'].map((time) => (
-                <option key={time} value={time}>
-                  {time}
-                </option>
-              ))}
-            </select>
+          <div className="mb-4 w-[200px] items-center justify-center mx-auto">
+          <button
+            onClick={handleBookNow}
+            disabled={isLoading || isLoadingSlots || !bookingDate || !bookingTime || !hasAvailableTimes}
+            className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-6 rounded-lg transition duration-200 disabled:bg-blue-300"
+          >
+            {isLoading ? 'Processing...' : 'Book Now'}
+          </button>
           </div>
         </div>
       </div>
-
-      <button
-        onClick={handleBookNow}
-        disabled={isLoading}
-        className="w-200 mt-6 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg disabled:opacity-50 transition ease-in-out duration-200"
-      >
-        {isLoading ? 'Booking...' : 'Book Now'}
-      </button>
     </div>
   );
 }
 
 export function LessonGrid({ lessons }) {
   const groupedLessons = lessons.reduce((acc, lesson) => {
-    const category = lesson.category || 'Others';
+    const category = lesson.category || '';
     if (!acc[category]) acc[category] = [];
     acc[category].push(lesson);
     return acc;
   }, {});
 
   return (
-    <div className="space-y-12 px-4">
+    <div className="grid grid-cols-1 gap-x-8 gap-y-12 items-stretch justify-items-center pt-8 mt-6">
       {Object.keys(groupedLessons).map((category) => (
-        <div key={category}>
+        <div key={category} className="w-full">
           <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">{category}</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch justify-items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 items-stretch justify-items-center">
             {groupedLessons[category].map((lesson) => (
               <LessonCard key={lesson.id} lesson={lesson} />
             ))}

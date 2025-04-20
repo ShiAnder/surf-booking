@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth/next';
 import stripe from '../../../../lib/stripe';
 import prisma from '../../../../lib/db';
 import { authOptions } from '../../../../lib/auth';
+import { sendMail } from '../../../../lib/email';
 
 export async function POST(req) {
   try {
@@ -78,6 +79,56 @@ export async function POST(req) {
       where: { id: booking.id },
       data: { stripeSessionId: stripeSession.id },
     });
+
+    // Format email content
+    const bookingDate = new Date(date).toLocaleDateString();
+    const userEmail = session.user.email;
+    const userName = session.user.name || session.user.email;
+
+    const userEmailHtml = `
+      <h2>Surf Booking Confirmation</h2>
+      <p>Hi ${userName},</p>
+      <p>Your booking has been received for the lesson:</p>
+      <ul>
+        <li><strong>Lesson:</strong> ${lesson.title}</li>
+        <li><strong>Date:</strong> ${bookingDate}</li>
+        <li><strong>Time:</strong> ${time}</li>
+        <li><strong>Price:</strong> $${lesson.price}</li>
+      </ul>
+      <p>You can complete your payment <a href="${stripeSession.url}">here</a>.</p>
+    `;
+
+    const adminEmailHtml = `
+      <h2>New Surf Lesson Booking</h2>
+      <p>A new booking has been made by ${userName}:</p>
+      <ul>
+        <li><strong>Email:</strong> ${userEmail}</li>
+        <li><strong>Lesson:</strong> ${lesson.title}</li>
+        <li><strong>Date:</strong> ${bookingDate}</li>
+        <li><strong>Time:</strong> ${time}</li>
+        <li><strong>Price:</strong> $${lesson.price}</li>
+      </ul>
+    `;
+
+    // Try to send emails but continue even if they fail
+    try {
+      // Send email to user
+      await sendMail({
+        to: userEmail,
+        subject: 'Your Surf Lesson Booking Received - Payment Pending',
+        html: userEmailHtml,
+      });
+
+      // Send email to admin
+      await sendMail({
+        to: process.env.ADMIN_EMAIL,
+        subject: 'New Surf Booking Notification',
+        html: adminEmailHtml,
+      });
+    } catch (emailError) {
+      // Log the error but don't stop the checkout process
+      console.error('Email sending failed:', emailError);
+    }
 
     return NextResponse.json({ sessionUrl: stripeSession.url, sessionId: stripeSession.id });
   } catch (error) {

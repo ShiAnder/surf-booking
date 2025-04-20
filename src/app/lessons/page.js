@@ -17,7 +17,7 @@ export default function LessonsPage() {
         if (!response.ok) throw new Error('Failed to fetch lessons');
         const data = await response.json();
         setLessons(data);
-      } catch (err) {
+      } catch {
         setError('Failed to load lessons. Please try again later.');
       } finally {
         setLoading(false);
@@ -39,7 +39,7 @@ export default function LessonsPage() {
     <div className="min-h-screen">
       {/* Hero Banner */}
       <div className="bg-gradient-to-r from-blue-600 to-teal-500 text-white py-16 px-4 rounded-3xl shadow-lg mb-12">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center mt-[50px]">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
             Discover Your Perfect Surf Lesson
           </h1>

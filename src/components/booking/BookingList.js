@@ -15,7 +15,7 @@ export default function BookingList({ bookings }) {
   if (bookings.length === 0) {
     return (
       <div className="text-center p-8">
-        <p className="mb-4 text-lg text-gray-600">You haven't booked any surf lessons yet.</p>
+        <p className="mb-4 text-lg text-gray-600">You haven&apos;t booked any surf lessons yet.</p>
         <button
           onClick={() => router.push('/lessons')}
           className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 ease-in-out shadow-md hover:scale-105"

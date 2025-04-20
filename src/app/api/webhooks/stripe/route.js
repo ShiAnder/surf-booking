@@ -1,55 +1,64 @@
-// src/app/api/webhooks/stripe/route.js
 import { NextResponse } from 'next/server';
+import Stripe from 'stripe';
 import { headers } from 'next/headers';
-import stripe from '../../../../lib/stripe';
 import prisma from '../../../../lib/db';
 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
 export async function POST(req) {
-  const body = await req.text();
-  const signature = headers().get('stripe-signature');
-  
-  let event;
-  
   try {
-    event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET
-    );
-  } catch (err) {
-    console.error(`Webhook signature verification failed: ${err.message}`);
-    return NextResponse.json({ error: err.message }, { status: 400 });
-  }
-  
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-    
+    const body = await req.text();
+    const signature = headers().get('stripe-signature');
+
+    // Verify the webhook signature
+    let event;
     try {
-      // Find the booking using the session ID from Stripe
-      const updatedBooking = await prisma.booking.update({
-        where: { stripeSessionId: session.id },
+      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    } catch (err) {
+      console.error(`Webhook signature verification failed: ${err.message}`);
+      return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
+    }
+
+    // Handle the checkout.session.completed event
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+      
+      // Find the booking using the stripeSessionId
+      const booking = await prisma.booking.findFirst({
+        where: {
+          stripeSessionId: session.id,
+        },
+        include: {
+          user: true,
+          lesson: true,
+        },
+      });
+
+      if (!booking) {
+        console.error(`No booking found for Stripe session: ${session.id}`);
+        return new NextResponse('Booking not found', { status: 404 });
+      }
+
+      // Update booking status to confirmed
+      await prisma.booking.update({
+        where: {
+          id: booking.id,
+        },
         data: {
-          stripeCustomerId: session.customer, // Update with the Stripe customer ID
-          status: 'confirmed', // Update the status to 'confirmed' when the checkout is complete
+          status: 'confirmed',
+          paidAt: new Date(),
         },
       });
       
-      if (!updatedBooking) {
-        console.error('Booking not found for session:', session.id);
-        return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
-      }
-
-      console.log('Booking updated with stripeCustomerId:', updatedBooking);
-      
-      return NextResponse.json({ received: true });
-    } catch (error) {
-      console.error('Error processing webhook:', error);
-      return NextResponse.json(
-        { error: 'Error processing webhook' },
-        { status: 500 }
-      );
     }
+
+    return new NextResponse('Webhook received', { status: 200 });
+  } catch (error) {
+    console.error('Webhook error:', error);
+    return new NextResponse(`Webhook error: ${error.message}`, { status: 500 });
   }
-  
-  return NextResponse.json({ received: true });
 }
+
+// Configure the route as dynamic to ensure it always gets the latest data
+export const dynamic = 'force-dynamic';

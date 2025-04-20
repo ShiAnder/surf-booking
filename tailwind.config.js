@@ -10,6 +10,10 @@ module.exports = {
       fontFamily: {
         custom: ['Roboto', 'sans-serif'],
       },
+      screens: {
+        sm: '640px',
+        md: '1024px', // <- this could cause hamburger to appear up to 1024px
+      },
       colors: {
         'brand-blue': {
           50: '#f0f9ff',

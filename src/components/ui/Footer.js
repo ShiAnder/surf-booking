@@ -1,4 +1,5 @@
 import { FaInstagram, FaFacebook, FaTwitter, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -14,8 +15,8 @@ export default function Footer() {
             </h2>
             <p className="text-base mb-6">
               Experience the ultimate surf adventure with our expert instructors.
-              Whether you're a beginner or looking to refine your skills, 
-              we're here to help you catch the perfect wave.
+              Whether you&apos;re a beginner or looking to refine your skills, 
+              we&apos;re here to help you catch the perfect wave.
             </p>
             <div className="flex justify-center md:justify-start space-x-5">
               <a
@@ -52,24 +53,24 @@ export default function Footer() {
           <div className="text-center md:text-left">
             <h3 className="text-2xl font-bold mb-6 text-yellow-300">Quick Links</h3>
             <nav className="space-y-4">
-              <a
+              <Link
                 href="/"
                 className="block text-lg hover:text-yellow-300 transition-colors"
               >
                 Home
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/lessons"
                 className="block text-lg hover:text-yellow-300 transition-colors"
               >
                 Lessons
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/bookings"
                 className="block text-lg hover:text-yellow-300 transition-colors"
               >
                 My Bookings
-              </a>
+              </Link>
             </nav>
           </div>
 
@@ -88,10 +89,10 @@ export default function Footer() {
               <div className="flex items-center justify-center md:justify-start">
                 <FaEnvelope className="mr-3 text-yellow-300" size={20} />
                 <a
-                  href="mailto:info@wavecatcher.com"
+                  href="mailto:info@bluelinesurf.com"
                   className="hover:text-yellow-300 transition-colors"
                 >
-                  info@wavecatcher.com
+                  info@bluelinesurf.com
                 </a>
               </div>
             </address>
@@ -100,7 +101,7 @@ export default function Footer() {
 
         {/* Footer Bottom */}
         <div className="border-t border-white border-opacity-20 mt-10 pt-6 text-center text-sm text-white text-opacity-80">
-          <p>&copy; {currentYear} WaveCatcher Surf School. All rights reserved.</p>
+          <p>&copy; {currentYear} Blueline Surf School. All rights reserved.</p>
         </div>
       </div>
     </footer>
