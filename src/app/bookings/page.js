@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { Loader2, Calendar, Clock, DollarSign, AlertCircle } from 'lucide-react';
 
 export default function BookingsPage() {
-  const { data: status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,11 +26,19 @@ export default function BookingsPage() {
   async function fetchBookings() {
     try {
       const response = await fetch('/api/bookings');
+      
+      // If response is 404, it means no bookings found - this is not an error
+      if (response.status === 404) {
+        setBookings([]);
+        return;
+      }
+      
       if (!response.ok) {
         throw new Error('Failed to fetch your bookings');
       }
+      
       const data = await response.json();
-      setBookings(data.bookings);
+      setBookings(data.bookings || []);
     } catch (err) {
       console.error('Error loading bookings:', err);
       setError('Failed to load your bookings. Please try again later.');
