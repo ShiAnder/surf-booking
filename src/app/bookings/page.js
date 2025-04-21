@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { Loader2, Calendar, Clock, DollarSign, AlertCircle } from 'lucide-react';
 
 export default function BookingsPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
