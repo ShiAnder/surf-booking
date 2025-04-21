@@ -123,8 +123,8 @@ function NavLink({ href, label, Icon, scrolled, onClick }) {
     <Link
       href={href}
       onClick={onClick}
-      className={`flex items-center justify-center font-semibold px-4 py-2 rounded-full transition-all border border-white/30 hover:bg-white/20 hover:border-yellow-300 text-center no-underline w-[110px] h-[35px] ${
-        scrolled ? 'bg-black' : 'bg-[rgb(247,247,247)]'
+      className={`flex items-center justify-center font-semibold px-4 py-2 transition-all hover:bg-gray hover:border-yellow-300 text-center no-underline w-[110px] h-[35px] ${
+        scrolled ? 'bg-black' : 'bg-[rgb(234, 122, 122)]'
       }`}
     >
       <Icon size={18} color={scrolled ? 'white' : 'black'} />
@@ -160,7 +160,7 @@ function AuthSection({ session, scrolled, userMenuOpen, setUserMenuOpen, isMobil
         </button>
 
         {userMenuOpen && (
-          <div className={`relative -ml-[130px] mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 ${isMobile ? 'left-0' : 'md:right-0'}`}>
+          <div className={`absolute mt-2 w-48 bg-white rounded-lg shadow-xl -ml-[130px] py-2 z-50 ${isMobile ? 'left-0' : 'md:right-0'}`}>
             <div className="px-4 py-2 border-b border-gray-100">
               <p className="text-sm font-medium text-gray-900">{session.user?.name || 'User'}</p>
               <p className="text-xs text-gray-500 truncate">{session.user?.email}</p>
