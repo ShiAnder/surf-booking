@@ -13,6 +13,8 @@ import {
   CalendarCheck,
   Menu,
   X,
+  Camera,
+  Video
 } from 'lucide-react';
 
 export default function Header() {
@@ -81,13 +83,15 @@ export default function Header() {
                 <div className="flex flex-wrap md:flex-nowrap justify-center items-center gap-2 md:gap-4">
                   <NavLink href="/" label="Home" Icon={Home} scrolled={scrolled} />
                   <NavLink href="/lessons" label="Lessons" Icon={BookOpen} scrolled={scrolled} />
+                  <NavLink href="/gallery" label="Gallery" Icon={Camera} scrolled={scrolled} />
+                  <NavLink href="/videos" label="Tutorials" Icon={Video} scrolled={scrolled} />
                   {session && <NavLink href="/bookings" label="Bookings" Icon={CalendarCheck} scrolled={scrolled} />}
                 </div>
               </nav>
 
               {/* Auth Section */}
               <div className="order-2 ml-auto">
-              <AuthSection session={session} scrolled={scrolled} userMenuOpen={userMenuOpen} setUserMenuOpen={setUserMenuOpen} />
+                <AuthSection session={session} scrolled={scrolled} userMenuOpen={userMenuOpen} setUserMenuOpen={setUserMenuOpen} />
               </div>
             </div>
           )}
@@ -98,6 +102,8 @@ export default function Header() {
           <div className="mt-4 md:hidden flex flex-col gap-2 items-center ml-[250px]">
             <NavLink href="/" label="Home" Icon={Home} scrolled={scrolled} onClick={() => setMobileMenuOpen(false)} />
             <NavLink href="/lessons" label="Lessons" Icon={BookOpen} scrolled={scrolled} onClick={() => setMobileMenuOpen(false)} />
+            <NavLink href="/gallery" label="Gallery" Icon={Camera} scrolled={scrolled} onClick={() => setMobileMenuOpen(false)} />
+            <NavLink href="/videos" label="Tutorials" Icon={Video} scrolled={scrolled} onClick={() => setMobileMenuOpen(false)} />
             {session && (
               <NavLink
                 href="/bookings"
