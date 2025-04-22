@@ -80,11 +80,11 @@ export default function Footer() {
             <address className="text-base not-italic space-y-4">
               <div className="flex items-center justify-center md:justify-start">
                 <FaMapMarkerAlt className="mr-3 text-yellow-300" size={20} />
-                <p>Bondi Beach, Sydney, Australia</p>
+                <p>No 65, Yakdehimulla, Road, Unawatuna 80600</p>
               </div>
               <div className="flex items-center justify-center md:justify-start">
                 <FaPhone className="mr-3 text-yellow-300" size={20} />
-                <p>+61 123 456 789</p>
+                <p>+94 766 690 504</p>
               </div>
               <div className="flex items-center justify-center md:justify-start">
                 <FaEnvelope className="mr-3 text-yellow-300" size={20} />
