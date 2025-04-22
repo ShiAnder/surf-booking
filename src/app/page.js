@@ -8,6 +8,13 @@ export default function Home() {
     const handleScroll = () => {
     };
     window.addEventListener('scroll', handleScroll);
+
+     // Inject Elfsight script dynamically
+     const script = document.createElement('script');
+     script.src = 'https://static.elfsight.com/platform/platform.js';
+     script.async = true;
+     document.body.appendChild(script);
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -133,6 +140,12 @@ export default function Home() {
               </p>
               <div className="absolute -bottom-2 -right-2 w-24 h-24 bg-purple-50 rounded-full opacity-20 group-hover:scale-150 transition-all duration-700"></div>
             </div>
+
+             {/* Elfsight Google Reviews Embed */}
+            <div className="mt-20">
+              <div className="elfsight-app-818c7483-3944-4ce6-8f5e-40ab4b65d5f2" data-elfsight-app-lazy></div>
+            </div>
+
 
             </div>
           </div>
