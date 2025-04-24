@@ -22,6 +22,7 @@
     "@mui/material": "^7.0.1",
     "@next-auth/prisma-adapter": "^1.0.7",
     "@prisma/client": "latest",
+    "@radix-ui/react-dialog": "^1.1.11",
     "@vercel/blob": "^1.0.0",
     "axios": "^1.8.4",
     "framer-motion": "^12.6.3",
@@ -33,6 +34,8 @@
     "react": "latest",
     "react-dom": "latest",
     "react-icons": "^5.5.0",
+    "react-modal-video": "^2.0.2",
+    "react-player": "^2.16.0",
     "resend": "^4.3.0",
     "stripe": "latest",
     "yet-another-react-lightbox": "^3.23.0"
