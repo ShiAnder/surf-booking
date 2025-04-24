@@ -34,7 +34,8 @@
     "react-dom": "latest",
     "react-icons": "^5.5.0",
     "resend": "^4.3.0",
-    "stripe": "latest"
+    "stripe": "latest",
+    "yet-another-react-lightbox": "^3.23.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.3",
