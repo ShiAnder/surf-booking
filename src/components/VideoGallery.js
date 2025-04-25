@@ -1,61 +1,147 @@
 'use client';
 
-import { useState } from 'react';
-import ModalVideo from 'react-modal-video';
-import 'react-modal-video/css/modal-video.css';
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Play, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function VideoGallery({ videos }) {
-  const [isOpen, setOpen] = useState(false);
-  const [videoUrl, setVideoUrl] = useState('');
-  const [activeVideo, setActiveVideo] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(null);
+  const videoRef = useRef(null);
 
-  const openVideoModal = (url) => {
-    setVideoUrl(url);
-    setActiveVideo(url); // Set the active video URL
-    setOpen(true);
+  const openVideo = async (index) => {
+    setCurrentIndex(index);
+    document.documentElement.style.overflow = 'hidden'; // Disable scrolling
+
+    // Delay to allow video to mount before fullscreen
+    setTimeout(() => {
+      if (videoRef.current?.requestFullscreen) {
+        videoRef.current.requestFullscreen();
+      }
+    }, 200);
   };
 
-  const closeModal = () => {
-    setOpen(false);
-    setActiveVideo(null); // Reset the active video when modal is closed
+  const closeVideo = () => {
+    setCurrentIndex(null);
+    document.documentElement.style.overflow = 'auto'; // Re-enable scrolling
   };
+
+  const nextVideo = () => {
+    setCurrentIndex((prev) => (prev + 1) % videos.length);
+  };
+
+  const prevVideo = () => {
+    setCurrentIndex((prev) => (prev - 1 + videos.length) % videos.length);
+  };
+
+  // Handle fullscreen exit to close the video
+  useEffect(() => {
+    const handleFullScreenChange = () => {
+      if (!document.fullscreenElement) {
+        closeVideo();
+      }
+    };
+
+    document.addEventListener('fullscreenchange', handleFullScreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullScreenChange);
+    };
+  }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <ModalVideo
-        channel="custom"
-        isOpen={isOpen}
-        url={videoUrl}
-        onClose={closeModal}
-      />
+    <div className="container mx-auto px-4 py-8 bg-gray-50">
+        {/* Video Grid */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {videos.map((video, index) => (
+            <motion.div
+              key={video.url}
+              className="cursor-pointer group relative"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
+              whileHover={{ y: -4 }}
+              onClick={() => openVideo(index)}
+            >
+              <div className="aspect-video bg-gray-300 rounded-lg overflow-hidden relative">
+                <video
+                  className="w-full h-full object-cover"
+                  src={video.url}
+                  poster={video.thumbnail || undefined}
+                  autoPlay
+                  muted
+                  loop
+                  preload="metadata"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200">
+                  <div className="bg-black bg-opacity-60 rounded-full p-3 scale-0 group-hover:scale-100 transition-all duration-200">
+                    <Play size={20} className="text-white" />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {videos.map((video) => (
-          <div
-            key={video.url}
-            className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow duration-300"
-            onClick={() => openVideoModal(video.url)}
-          >
-            <div className="aspect-video relative bg-gray-100">
-              {/* Directly use the video URL */}
-              <video
-                className="w-full h-full object-cover"
-                controls
-                poster="/video-thumbnail-placeholder.jpg" // Optional: You can keep a placeholder for the poster image if needed
-                muted={activeVideo !== video.url} // Mute other videos
-                autoPlay={activeVideo === video.url} // Only play the active video
+        {/* Fullscreen Modal Player */}
+        <AnimatePresence>
+          {currentIndex !== null && (
+            <motion.div
+              className="fixed inset-0 z-50 bg-black flex items-center justify-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* Close Button */}
+              <motion.button
+                className="absolute top-5 right-5 z-10 bg-white bg-opacity-20 hover:bg-opacity-40 text-white p-2 rounded-full backdrop-blur-md"
+                onClick={closeVideo}
+                whileHover={{ scale: 1.1 }}
               >
-                <source src={video.url} type="video/mp4" />
-                {/* You can add more formats here if needed */}
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <div className="p-4">
-              <h3 className="font-medium text-lg truncate">{video.pathname.split('/').pop()}</h3>
-            </div>
-          </div>
-        ))}
+                <X size={24} />
+              </motion.button>
+
+              {/* Previous Button */}
+              <motion.button
+                className="absolute left-5 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-20 hover:bg-opacity-40 text-white p-2 rounded-full backdrop-blur-md"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevVideo();
+                }}
+                whileHover={{ scale: 1.1 }}
+              >
+                <ChevronLeft size={24} />
+              </motion.button>
+
+              {/* Next Button */}
+              <motion.button
+                className="absolute right-5 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-20 hover:bg-opacity-40 text-white p-2 rounded-full backdrop-blur-md"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextVideo();
+                }}
+                whileHover={{ scale: 1.1 }}
+              >
+                <ChevronRight size={24} />
+              </motion.button>
+
+              {/* Fullscreen Video */}
+              <video
+                ref={videoRef}
+                className="w-full h-full object-contain"
+                src={videos[currentIndex].url}
+                autoPlay
+                loop // Ensure the video loops
+                controls
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </div>
+
   );
 }
