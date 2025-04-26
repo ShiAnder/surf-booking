@@ -11,8 +11,8 @@ module.exports = {
         custom: ['Roboto', 'sans-serif'],
       },
       screens: {
-        sm: '640px',
-        md: '1024px', // <- this could cause hamburger to appear up to 1024px
+        ...require('tailwindcss/defaultTheme').screens,
+        md: '1024px', // override only this
       },
       colors: {
         'brand-blue': {
