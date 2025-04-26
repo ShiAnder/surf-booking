@@ -9,15 +9,16 @@ const MobileVideoGallery = ({ videos }) => {
   const [currentIndex, setCurrentIndex] = useState(null);
   const videoRef = useRef(null);
   const thumbVideoRefs = useRef([]);
+  const scrollYRef = useRef(0); // Store scroll position in a ref instead
 
   // Enhanced open video function specifically for mobile
   const openVideo = (index) => {
     setCurrentIndex(index);
     
-    // Force body to be fixed position with current scroll position
-    const scrollY = window.scrollY;
+    // Store scroll position in ref
+    scrollYRef.current = window.scrollY;
     document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
+    document.body.style.top = `-${scrollYRef.current}px`;
     document.body.style.width = '100%';
     
     // Pause all thumbnail videos
@@ -56,19 +57,30 @@ const MobileVideoGallery = ({ videos }) => {
       videoRef.current.pause();
     }
     
-    // Restore scroll position
-    const scrollY = document.body.style.top;
+    // Clear fixed positioning first
     document.body.style.position = '';
     document.body.style.top = '';
     document.body.style.width = '';
-    window.scrollTo(0, parseInt(scrollY || '0') * -1);
     
+    // Then restore scroll position from ref
+    window.scrollTo(0, scrollYRef.current);
+    
+    // Reset currentIndex AFTER handling scroll position
     setCurrentIndex(null);
     
-    // Resume all thumbnail videos
-    thumbVideoRefs.current.forEach(video => {
-      if (video) video.play();
-    });
+    // Add a small delay before restarting thumbnail videos
+    setTimeout(() => {
+      // Resume all thumbnail videos - don't return promises from this function
+      thumbVideoRefs.current.forEach(video => {
+        if (video) {
+          try {
+            video.play();
+          } catch (err) {
+            console.error("Error playing thumbnail video:", err);
+          }
+        }
+      });
+    }, 50);
   };
 
   const nextVideo = () => {
@@ -91,9 +103,14 @@ const MobileVideoGallery = ({ videos }) => {
         document.body.style.position = '';
         document.body.style.top = '';
         document.body.style.width = '';
+        window.scrollTo(0, scrollYRef.current);
         
         if (document.fullscreenElement) {
-          document.exitFullscreen().catch(() => {});
+          try {
+            document.exitFullscreen();
+          } catch (err) {
+            console.error("Error exiting fullscreen:", err);
+          }
         }
       }
     };
@@ -139,7 +156,7 @@ const MobileVideoGallery = ({ videos }) => {
             <div className="aspect-video bg-gray-300 rounded-lg overflow-hidden relative">
               <video
                 ref={el => thumbVideoRefs.current[index] = el}
-                className="w-[350px] h-[300px] object-cover"
+                className="w-full h-full object-cover"
                 src={video.url}
                 poster={video.thumbnail || undefined}
                 autoPlay
@@ -225,7 +242,7 @@ const DesktopVideoGallery = ({ videos }) => {
   const thumbVideoRefs = useRef([]);
 
   // Desktop-specific open video function with proper fullscreen handling
-  const openVideo = async (index) => {
+  const openVideo = (index) => {
     setCurrentIndex(index);
     document.body.style.overflow = 'hidden'; // Disable scrolling on body
 
@@ -253,7 +270,11 @@ const DesktopVideoGallery = ({ videos }) => {
   const closeVideo = () => {
     // Explicitly exit fullscreen if we're in it
     if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => {});
+      try {
+        document.exitFullscreen();
+      } catch (err) {
+        console.error("Error exiting fullscreen:", err);
+      }
     } else if (document.webkitFullscreenElement) {
       document.webkitExitFullscreen();
     } else if (document.mozFullScreenElement) {
@@ -270,10 +291,18 @@ const DesktopVideoGallery = ({ videos }) => {
     setCurrentIndex(null);
     document.body.style.overflow = 'auto'; // Re-enable scrolling
 
-    // Resume all thumbnail videos
-    thumbVideoRefs.current.forEach(video => {
-      if (video) video.play();
-    });
+    // Resume all thumbnail videos - avoid returning promises
+    setTimeout(() => {
+      thumbVideoRefs.current.forEach(video => {
+        if (video) {
+          try {
+            video.play();
+          } catch (err) {
+            console.error("Error playing thumbnail video:", err);
+          }
+        }
+      });
+    }, 50);
   };
 
   const nextVideo = () => {
@@ -335,7 +364,7 @@ const DesktopVideoGallery = ({ videos }) => {
             <div className="aspect-video bg-gray-300 rounded-lg overflow-hidden relative shadow-lg">
               <video
                 ref={el => thumbVideoRefs.current[index] = el}
-                className="w-[500px] h-[500px] object-cover"
+                className="w-full h-full object-cover"
                 src={video.url}
                 poster={video.thumbnail || undefined}
                 autoPlay
