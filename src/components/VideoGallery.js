@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { X, Play, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Mobile & tablet version
