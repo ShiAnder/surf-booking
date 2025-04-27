@@ -30,8 +30,8 @@ export default function Home() {
               <Image
                 src="/images/logo.jpg"
                 alt="Logo"
-                width={250}
-                height={250}
+                width={200}
+                height={200}
                 className="rounded-full"
                 priority
               />
