@@ -1,5 +1,6 @@
 "use client";
 import Link from 'next/link';
+import Image from 'next/image';
 import { useEffect } from 'react';
 
 export default function Home() {
@@ -24,6 +25,18 @@ export default function Home() {
       <div className="relative min-h-[98vh] flex items-center justify-center text-center bg-gradient-to-br from-blue-600 via-teal-500 to-cyan-400 overflow-hidden shadow-lg">
         <div className="absolute inset-0 opacity-10 bg-cover"></div>
         <div className="container mx-auto px-4 relative z-10">
+          {/* Logo Image placed above the headline */}
+            <div className="mb-6 flex justify-center">
+              <Image
+                src="/images/logo.jpg"
+                alt="Logo"
+                width={250}
+                height={250}
+                className="rounded-full"
+                priority
+              />
+            </div>
+          
           <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-white tracking-tight drop-shadow-lg">
             Catch Your <span className="relative inline-block bg-yellow-400 text-teal-900 px-2 rounded-md shadow-md animate-pulse">Perfect</span> Wave
           </h1>

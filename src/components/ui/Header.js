@@ -52,6 +52,7 @@ export default function Header() {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
+          <Link href="/">
           <div className="flex-shrink-0">
             <div className="relative max-w-[60px] max-h-[60px] md:max-w-[80px] md:max-h-[80px] lg:max-w-[120px] lg:max-h-[120px]">
               <Image
@@ -64,6 +65,7 @@ export default function Header() {
               />
             </div>
           </div>
+          </Link>
 
           {/* Hamburger toggle (only on mobile) */}
           {isMobile && (
@@ -166,7 +168,7 @@ function AuthSection({ session, scrolled, userMenuOpen, setUserMenuOpen, isMobil
         </button>
 
         {userMenuOpen && (
-          <div className={`absolute mt-2 w-48 bg-white rounded-lg shadow-xl -ml-[130px] py-2 z-50 ${isMobile ? 'left-0' : 'md:right-0'}`}>
+         <div className={`mt-2 w-48 bg-white rounded-lg shadow-xl -ml-[130px] py-2 z-50 ${isMobile ? 'relative left-0' : 'absolute md:right-0'}`}>
             <div className="px-4 py-2 border-b border-gray-100">
               <p className="text-sm font-medium text-gray-900">{session.user?.name || 'User'}</p>
               <p className="text-xs text-gray-500 truncate">{session.user?.email}</p>
