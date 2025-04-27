@@ -153,10 +153,10 @@ const MobileVideoGallery = ({ videos }) => {
             whileHover={{ y: -2 }}
             onClick={() => openVideo(index)}
           >
-            <div className="aspect-video bg-gray-300 rounded-lg overflow-hidden relative">
+            <div className="aspect-video bg-gray-300 rounded-lg overflow-hidden itmes-center justify-center relative">
               <video
                 ref={el => thumbVideoRefs.current[index] = el}
-                className="w-full h-full object-cover"
+                className="w-[350px] h-[350px] object-cover"
                 src={video.url}
                 poster={video.thumbnail || undefined}
                 autoPlay
@@ -364,7 +364,7 @@ const DesktopVideoGallery = ({ videos }) => {
             <div className="aspect-video bg-gray-300 rounded-lg overflow-hidden relative shadow-lg">
               <video
                 ref={el => thumbVideoRefs.current[index] = el}
-                className="w-full h-full object-cover"
+                className="w-[500px] h-[500px] object-cover"
                 src={video.url}
                 poster={video.thumbnail || undefined}
                 autoPlay
