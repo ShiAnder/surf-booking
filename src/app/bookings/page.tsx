@@ -48,11 +48,23 @@ export default function BookingsPage() {
     try {
       const response = await fetch('/api/bookings');
       if (!response.ok) throw new Error('Failed to fetch bookings');
+      
       const data = await response.json();
-      setBookings(data);
+      
+      // Ensure data is an array before setting bookings
+      if (Array.isArray(data)) {
+        setBookings(data);
+      } else if (data && Array.isArray(data.bookings)) {
+        // In case the API returns { bookings: [...] }
+        setBookings(data.bookings);
+      } else {
+        console.warn('API returned unexpected data format:', data);
+        setBookings([]);
+      }
     } catch (err) {
       console.error('Error loading bookings:', err);
       setError('Failed to load your bookings. Please try again later.');
+      setBookings([]); // Ensure bookings is always an array
     } finally {
       setLoading(false);
     }
