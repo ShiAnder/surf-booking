@@ -5,12 +5,12 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gradient-to-r from-blue-700 to-teal-600 text-white pt-12 pb-6">
+    <footer className="bg-gray-900 from-blue-700 to-teal-600 text-white pt-12 pb-6">
       <div className="container mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Company Info */}
           <div className="text-center md:text-left">
-            <h2 className="text-3xl font-extrabold text-yellow-300 mb-4 flex items-center justify-center md:justify-start">
+            <h2 className="text-3xl font-extrabold text-white mb-4 flex items-center justify-center md:justify-start">
               Blue Line Surf School
             </h2>
             <p className="text-base mb-6">
@@ -51,7 +51,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="text-center md:text-left">
-            <h3 className="text-2xl font-bold mb-6 text-yellow-300">Quick Links</h3>
+            <h3 className="text-2xl font-bold mb-6 text-white">Quick Links</h3>
             <nav className="space-y-4">
               <Link
                 href="/"
@@ -76,14 +76,14 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div className="text-center md:text-left">
-            <h3 className="text-2xl font-bold mb-6 text-yellow-300">Contact Us</h3>
+            <h3 className="text-2xl font-bold mb-6 text-white">Contact Us</h3>
             <address className="text-base not-italic space-y-4">
               <div className="flex items-center justify-center md:justify-start">
                 <FaMapMarkerAlt className="mr-3 text-yellow-300" size={20} />
                 <p>No 65, Yakdehimulla, Road, Unawatuna 80600</p>
               </div>
               <div className="flex items-center justify-center md:justify-start">
-                <FaPhone className="mr-3 text-yellow-300" size={20} />
+                <FaPhone className="mr-3 text-white" size={20} />
                 <p>+94 766 690 504</p>
               </div>
               <div className="flex items-center justify-center md:justify-start">

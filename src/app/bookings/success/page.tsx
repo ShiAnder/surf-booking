@@ -1,17 +1,23 @@
 'use client';
 
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState, Suspense, ReactNode } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { CheckCircle, AlertTriangle, Loader2, XCircle } from 'lucide-react';
 
+interface ButtonLinkProps {
+  href: string;
+  children: ReactNode;
+  variant?: 'primary' | 'secondary';
+}
+
 // ButtonLink component
-const ButtonLink = ({ href, children, variant = 'primary' }) => {
+const ButtonLink = ({ href, children, variant = 'primary' }: ButtonLinkProps) => {
   const baseClasses = 'px-6 py-2 rounded text-center transition font-medium';
   const variantClasses = {
     primary: 'bg-blue-600 text-white hover:bg-blue-700',
     secondary: 'border border-blue-500 text-blue-500 hover:bg-blue-50',
-  };
+  } as const;
 
   return (
     <Link href={href} className={`${baseClasses} ${variantClasses[variant]}`}>
@@ -20,8 +26,15 @@ const ButtonLink = ({ href, children, variant = 'primary' }) => {
   );
 };
 
+interface StatusWrapperProps {
+  children: ReactNode;
+  icon: React.ReactElement<{ className?: string }>;
+  title: string;
+  statusType: 'loading' | 'processing' | 'error' | 'success';
+}
+
 // StatusWrapper component
-const StatusWrapper = ({ children, icon, title, statusType }) => {
+const StatusWrapper = ({ children, icon, title, statusType }: StatusWrapperProps) => {
   const statusStyles = {
     loading: {
       bgColor: 'bg-blue-50',
@@ -47,7 +60,7 @@ const StatusWrapper = ({ children, icon, title, statusType }) => {
       textColor: 'text-green-800',
       iconColor: 'text-green-600',
     },
-  };
+  } as const;
 
   const style = statusStyles[statusType];
 
@@ -68,13 +81,29 @@ const StatusWrapper = ({ children, icon, title, statusType }) => {
   );
 };
 
+interface Lesson {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+}
+
+interface Booking {
+  id: string;
+  lesson: Lesson;
+  date: string;
+  time: string;
+  price: number;
+  status: 'pending' | 'confirmed' | 'cancelled';
+}
+
 // Main logic wrapped in separate component
 function BookingSuccessContent() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
-  const [booking, setBooking] = useState(null);
-  const [error, setError] = useState(null);
-  const [processingMessage, setProcessingMessage] = useState(null);
+  const [booking, setBooking] = useState<Booking | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [processingMessage, setProcessingMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const sessionId = searchParams.get('session_id');
@@ -104,7 +133,7 @@ function BookingSuccessContent() {
         }
       } catch (err) {
         console.error('Error loading booking details:', err);
-        setError(err.message || 'Failed to load booking details');
+        setError(err instanceof Error ? err.message : 'Failed to load booking details');
       } finally {
         setLoading(false);
       }

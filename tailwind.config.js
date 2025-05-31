@@ -15,6 +15,8 @@ module.exports = {
         md: '1024px', // override only this
       },
       colors: {
+        primary: '#0ea5e9',
+        secondary: '#0f172a',
         'brand-blue': {
           50: '#f0f9ff',
           100: '#e0f2fe',
@@ -27,6 +29,10 @@ module.exports = {
           800: '#075985',
           900: '#0c4a6e',
         },
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
     },
   },
