@@ -62,6 +62,7 @@ model Lesson {
   title       String
   description String
   price       Float
+  imageUrl    String?   // Optional field to store Vercel blob URL
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   bookings    Booking[]

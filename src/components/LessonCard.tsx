@@ -13,7 +13,7 @@ interface Lesson {
   category: string;
   price: number;
   duration: string;
-  image: string;
+  imageUrl: string;
 }
 
 interface BookedSlots {
@@ -134,9 +134,9 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
       <div className="group relative bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
         {/* Image Container */}
         <div className="relative h-64 w-full overflow-hidden bg-gray-100">
-          {!imageError && (lesson.image || defaultImage) ? (
+          {!imageError && (lesson.imageUrl || defaultImage) ? (
             <Image
-              src={lesson.image || defaultImage}
+              src={lesson.imageUrl || defaultImage}
               alt={lesson.title}
               fill
               className="object-cover transform transition-transform duration-500 group-hover:scale-110"

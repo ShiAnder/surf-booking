@@ -10,7 +10,7 @@ interface Lesson {
   category: string;
   price: number;
   duration: string;
-  image: string;
+  imageUrl: string;
 }
 
 export default function LessonsPage() {
