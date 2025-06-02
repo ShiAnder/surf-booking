@@ -55,7 +55,7 @@ export default function LessonsPage() {
             </p>
             
             {/* Category filter chips */}
-            <div className="flex flex-wrap justify-center gap-2 mt-8">
+            {/* <div className="flex flex-wrap justify-center gap-2 mt-8">
               {categories.map(category => (
                 <button
                   key={category}
@@ -69,7 +69,7 @@ export default function LessonsPage() {
                   {category.charAt(0).toUpperCase() + category.slice(1)}
                 </button>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

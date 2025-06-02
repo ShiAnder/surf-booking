@@ -75,10 +75,10 @@ export default function GalleryPage() {
       <div className="pt-48 pb-12 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-6xl font-extrabold italic tracking-tight text-white drop-shadow-lg mb-4">
+            <h1 className="text-5xl md:text-6xl font-extrabold italic tracking-tight text-gray-700 drop-shadow-lg mb-4">
               🌴 <span className="relative inline-block bg-yellow-400 text-teal-900 px-3 py-1 rounded-md shadow-md animate-pulse">Saltwater</span> Stories
             </h1>
-            <p className="text-4xl md:text-3xl font-semibold italic text-gray-100 drop-shadow-lg max-w-3xl mx-auto transition-opacity duration-1000 ease-in-out animate-fade-in">
+            <p className="text-4xl md:text-3xl font-semibold italic text-gray-500 drop-shadow-lg max-w-3xl mx-auto transition-opacity duration-1000 ease-in-out animate-fade-in">
               Every image tells a tale—of sun-kissed boards, crashing waves, and the spirit of the surf.
             </p>
           </div>
@@ -99,7 +99,7 @@ export default function GalleryPage() {
                   <div className="absolute inset-0">
                     <Image
                       src={image.url}
-                      alt={image.pathname}
+                      alt=''
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       className={`object-cover transition-all duration-500 group-hover:scale-110 ${
@@ -109,15 +109,6 @@ export default function GalleryPage() {
                       priority={false}
                       loading="lazy"
                     />
-                  </div>
-                </div>
-
-                {/* Image caption overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h3 className="text-white text-sm font-medium truncate">
-                      {image.pathname.split('/').pop()?.replace(/\.[^/.]+$/, '')}
-                    </h3>
                   </div>
                 </div>
               </div>

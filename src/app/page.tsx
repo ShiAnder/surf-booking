@@ -165,7 +165,7 @@ export default function Home() {
                   </div>
                   <div className="pt-4">
                     <Link
-                      href={`/bookings?lesson=${encodeURIComponent(lesson.title)}`}
+                      href={`/lessons`}
                       className="w-full inline-flex justify-center items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300"
                     >
                       Book This Lesson

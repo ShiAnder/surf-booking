@@ -63,7 +63,7 @@ export default function VideosPage() {
                 Cinematic
               </span> Journeys
             </h1>
-            <p className="text-2xl md:text-3xl font-semibold italic text-gray-100 drop-shadow-lg max-w-3xl mx-auto transition-opacity duration-1000 ease-in-out animate-fade-in">
+            <p className="text-2xl md:text-3xl font-semibold italic text-gray-500 drop-shadow-lg max-w-3xl mx-auto transition-opacity duration-1000 ease-in-out animate-fade-in">
               Each video unfolds a new adventure—stories of discovery, excitement, and inspiration waiting to be explored.
             </p>
           </div>
