@@ -2,7 +2,6 @@
 
 import { useSession, signIn } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { FaClock, FaWhatsapp, FaArrowRight, FaImage } from 'react-icons/fa';
 import Image from 'next/image';
 
@@ -38,7 +37,6 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
   const [bookedSlots, setBookedSlots] = useState<BookedSlots>({});
   const [imageError, setImageError] = useState(false);
   const [showBookingModal, setShowBookingModal] = useState(false);
-  const router = useRouter();
 
   // Default image if none provided
   const defaultImage = '/lesson/lesson1.jpg';
