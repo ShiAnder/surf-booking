@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaClock, FaWhatsapp, FaArrowRight, FaImage } from 'react-icons/fa';
@@ -61,7 +61,8 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
 
   const handleBookNow = async () => {
     if (!session) {
-      router.push('/api/auth/signin');
+      // Trigger Google sign-in instead of redirecting to sign-in page
+      signIn('google');
       return;
     }
 
@@ -184,12 +185,7 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
           <div className="flex flex-col gap-2">
             <button
               onClick={handleBookNow}
-              disabled={!session}
-              className={`inline-flex items-center justify-center w-full px-4 py-2 rounded-lg transition-all duration-300 relative z-20 ${
-                session 
-                  ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                  : 'bg-gray-400 text-white cursor-not-allowed'
-              }`}
+              className="inline-flex items-center justify-center w-full px-4 py-2 bg-blue-600 text-white rounded-lg transition-all duration-300 hover:bg-blue-700 relative z-20"
             >
               <span className="mr-2">{session ? 'Book Now' : 'Sign In to Book'}</span>
               {session && <FaArrowRight className="transform transition-transform duration-300 group-hover:translate-x-1" />}
