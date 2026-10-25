@@ -5,93 +5,61 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 from-blue-700 to-teal-600 text-white pt-12 pb-6">
-      <div className="container mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {/* Company Info */}
+    <footer className="border-t border-sky-100 bg-sky-50/60 pt-14 pb-8 text-slate-600">
+      <div className="container-custom">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+          {/* Company */}
           <div className="text-center md:text-left">
-            <h2 className="text-3xl font-extrabold text-white mb-4 flex items-center justify-center md:justify-start">
-              Blue Line Surf School
-            </h2>
-            <p className="text-base mb-6">
-              Experience the ultimate surf adventure with our expert instructors.
-              Whether you&apos;re a beginner or looking to refine your skills, 
-              we&apos;re here to help you catch the perfect wave.
+            <h2 className="mb-3 text-lg font-semibold text-slate-900">Blue Line Surf School</h2>
+            <p className="mx-auto max-w-sm text-sm leading-relaxed md:mx-0">
+              Expert instruction for every level. Whether you are a beginner or refining your
+              skills, we will help you catch the perfect wave.
             </p>
-            <div className="flex justify-center md:justify-start space-x-5">
-              <a
-                href="https://www.instagram.com"
-                className="text-white hover:text-yellow-300 transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-              >
-                <FaInstagram size={24} />
-              </a>
-              <a
-                href="https://www.facebook.com"
-                className="text-white hover:text-yellow-300 transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-              >
-                <FaFacebook size={24} />
-              </a>
-              <a
-                href="https://www.twitter.com"
-                className="text-white hover:text-yellow-300 transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Twitter"
-              >
-                <FaTwitter size={24} />
-              </a>
+            <div className="mt-5 flex justify-center gap-4 md:justify-start">
+              {[
+                { href: 'https://www.instagram.com', label: 'Instagram', Icon: FaInstagram },
+                { href: 'https://www.facebook.com', label: 'Facebook', Icon: FaFacebook },
+                { href: 'https://www.twitter.com', label: 'Twitter', Icon: FaTwitter },
+              ].map(({ href, label, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="text-slate-400 transition-colors hover:text-sky-600"
+                >
+                  <Icon size={18} />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick links */}
           <div className="text-center md:text-left">
-            <h3 className="text-2xl font-bold mb-6 text-white">Quick Links</h3>
-            <nav className="space-y-4">
-              <Link
-                href="/"
-                className="block text-lg hover:text-yellow-300 transition-colors"
-              >
-                Home
-              </Link>
-              <Link
-                href="/lessons"
-                className="block text-lg hover:text-yellow-300 transition-colors"
-              >
-                Lessons
-              </Link>
-              <Link
-                href="/bookings"
-                className="block text-lg hover:text-yellow-300 transition-colors"
-              >
-                My Bookings
-              </Link>
+            <h3 className="mb-3 text-base font-semibold text-slate-900">Quick links</h3>
+            <nav className="flex flex-col gap-2 text-sm">
+              <Link href="/" className="hover:text-sky-600 transition-colors">Home</Link>
+              <Link href="/lessons" className="hover:text-sky-600 transition-colors">Lessons</Link>
+              <Link href="/bookings" className="hover:text-sky-600 transition-colors">My bookings</Link>
             </nav>
           </div>
 
-          {/* Contact Info */}
+          {/* Contact */}
           <div className="text-center md:text-left">
-            <h3 className="text-2xl font-bold mb-6 text-white">Contact Us</h3>
-            <address className="text-base not-italic space-y-4">
-              <div className="flex items-center justify-center md:justify-start">
-                <FaMapMarkerAlt className="mr-3 text-yellow-300" size={20} />
-                <p>No 65, Yakdehimulla, Road, Unawatuna 80600</p>
+            <h3 className="mb-3 text-base font-semibold text-slate-900">Contact us</h3>
+            <address className="not-italic space-y-3 text-sm">
+              <div className="flex items-start justify-center gap-3 md:justify-start">
+                <FaMapMarkerAlt className="mt-1 shrink-0 text-sky-500" size={14} />
+                <p>No 65, Yakdehimulla Road, Unawatuna 80600</p>
               </div>
-              <div className="flex items-center justify-center md:justify-start">
-                <FaPhone className="mr-3 text-white" size={20} />
+              <div className="flex items-center justify-center gap-3 md:justify-start">
+                <FaPhone className="shrink-0 text-sky-500" size={14} />
                 <p>+94 766 690 504</p>
               </div>
-              <div className="flex items-center justify-center md:justify-start">
-                <FaEnvelope className="mr-3 text-yellow-300" size={20} />
-                <a
-                  href="mailto:info@bluelinesurf.com"
-                  className="hover:text-yellow-300 transition-colors"
-                >
+              <div className="flex items-center justify-center gap-3 md:justify-start">
+                <FaEnvelope className="shrink-0 text-sky-500" size={14} />
+                <a href="mailto:info@bluelinesurf.com" className="hover:text-sky-600 transition-colors">
                   info@bluelinesurf.com
                 </a>
               </div>
@@ -99,8 +67,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Footer Bottom */}
-        <div className="border-t border-white border-opacity-20 mt-10 pt-6 text-center text-sm text-white text-opacity-80">
+        <div className="mt-10 border-t border-sky-100 pt-6 text-center text-xs text-slate-500">
           <p>&copy; {currentYear} Blueline Surf School. All rights reserved.</p>
         </div>
       </div>

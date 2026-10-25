@@ -17,9 +17,7 @@ export default function VideosPage() {
     const fetchVideos = async () => {
       try {
         const response = await fetch('/api/blob?prefix=videos/');
-        if (!response.ok) {
-          throw new Error('Failed to fetch videos');
-        }
+        if (!response.ok) throw new Error('Failed to fetch videos');
         const data = await response.json();
         if (data.blobs.length === 0) {
           setError('No videos found.');
@@ -28,7 +26,7 @@ export default function VideosPage() {
         }
       } catch (err) {
         console.error('Error fetching videos:', err);
-        setError('Failed to fetch videos. Please try again later.');
+        setError('Failed to load videos. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -37,73 +35,48 @@ export default function VideosPage() {
     fetchVideos();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center text-center px-4">
-        <p className="text-lg text-red-600">{error}</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen">
-      <div className="pt-48 pb-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-extrabold italic tracking-tight drop-shadow-lg mb-3 md:mb-4">
-              🌟 <span className="relative inline-block bg-gradient-to-r bg-clip-text px-2 md:px-3 py-1 rounded-md shadow-md animate-pulse">
-                Cinematic
-              </span> Journeys
-            </h1>
-            <p className="text-2xl md:text-3xl font-semibold italic text-gray-500 drop-shadow-lg max-w-3xl mx-auto transition-opacity duration-1000 ease-in-out animate-fade-in">
-              Each video unfolds a new adventure—stories of discovery, excitement, and inspiration waiting to be explored.
-            </p>
-          </div>
+    <div>
+      <section className="border-b border-sky-100 bg-sky-50/60">
+        <div className="container-custom py-12 text-center md:py-16">
+          <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-sky-600">Videos</p>
+          <h1 className="mx-auto mb-3 max-w-2xl text-3xl font-semibold text-slate-900 md:text-4xl">
+            Cinematic journeys
+          </h1>
+          <p className="mx-auto max-w-xl text-slate-500">
+            Stories of discovery, excitement, and inspiration from the water.
+          </p>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="container-custom py-12">
+        {loading && <p className="py-20 text-center text-sm text-slate-500">Loading videos...</p>}
+
+        {!loading && error && <p className="py-20 text-center text-sm text-slate-500">{error}</p>}
+
+        {!loading && !error && (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {videos.map((video) => (
-              <div 
-                key={video.pathname} 
-                className="group relative overflow-hidden rounded-xl shadow-lg bg-gray-800"
-              >
-                <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-                  <div className="absolute inset-0">
-                    <video
-                      key={video.url}
-                      src={video.url}
-                      controls
-                      controlsList="nodownload"
-                      className="w-full h-full object-cover"
-                      preload="metadata"
-                      playsInline
-                      crossOrigin="anonymous"
-                    >
-                      <source src={video.url} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                </div>
-
-                {/* Video caption overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h3 className="text-white text-sm font-medium truncate">
-                      {video.pathname.split('/').pop()?.replace(/\.[^/.]+$/, '')}
-                    </h3>
-                  </div>
+              <div key={video.pathname} className="overflow-hidden rounded-xl border border-sky-100 bg-white shadow-sm">
+                <video
+                  src={video.url}
+                  controls
+                  controlsList="nodownload"
+                  className="aspect-video w-full bg-slate-900 object-cover"
+                  preload="metadata"
+                  playsInline
+                >
+                  Your browser does not support the video tag.
+                </video>
+                <div className="px-4 py-3">
+                  <h3 className="truncate text-sm font-medium text-slate-800">
+                    {video.pathname.split('/').pop()?.replace(/\.[^/.]+$/, '')}
+                  </h3>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

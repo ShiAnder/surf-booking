@@ -3,175 +3,153 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect } from 'react';
 import { useAOS } from '../hooks/useAOS';
+import { FaUserGraduate, FaMapMarkedAlt, FaWater } from 'react-icons/fa';
+
+const surfLessons = [
+  {
+    title: 'Beginner Surf Lesson',
+    description:
+      'Perfect for first-time surfers. Learn the basics of surfing, ocean safety, and proper technique in a safe, controlled environment.',
+    time: '2 hours',
+    price: 'From LKR 15,000 / $45 USD',
+    isPopular: true,
+    includes: ['Professional instructor', 'Surfboard', 'Rash guard', 'Basic theory'],
+  },
+  {
+    title: 'Intermediate Surf Coaching',
+    description:
+      'Take your surfing to the next level with personalized coaching on wave selection, technique refinement, and advanced maneuvers.',
+    time: '3 hours',
+    price: 'From LKR 25,000 / $75 USD',
+    isPopular: false,
+    includes: ['Advanced coaching', 'Video analysis', 'Equipment included'],
+  },
+  {
+    title: 'Private Surf Lesson',
+    description:
+      'One-on-one instruction tailored to your skill level and goals. Ideal for focused learning and faster progress.',
+    time: '2 hours',
+    price: 'From LKR 30,000 / $90 USD',
+    isPopular: false,
+    includes: ['Private instructor', 'Customized program', 'All equipment'],
+  },
+];
+
+const features = [
+  { icon: FaUserGraduate, title: 'Expert instructors', text: 'Learn from certified professionals with years of teaching experience.' },
+  { icon: FaMapMarkedAlt, title: 'Great location', text: 'Beautiful beaches with ideal conditions for every skill level.' },
+  { icon: FaWater, title: 'Quality equipment', text: 'Well-maintained boards and gear provided for every lesson.' },
+];
 
 export default function Home() {
-  useAOS(); // Initialize AOS
+  useAOS();
 
   useEffect(() => {
-    const handleScroll = () => {
-      // Scroll handling logic can be added here
-    };
-    window.addEventListener('scroll', handleScroll);
-
-    // Inject Elfsight script dynamically
+    // Elfsight widget (kept from the original page).
     const script = document.createElement('script');
     script.src = 'https://static.elfsight.com/platform/platform.js';
     script.async = true;
     document.body.appendChild(script);
-
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      // Clean up script if needed
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
+      if (script.parentNode) script.parentNode.removeChild(script);
     };
   }, []);
 
-  const surfLessons = [
-    {
-      title: "Beginner Surf Lesson",
-      description: "Perfect for first-time surfers. Learn the basics of surfing, ocean safety, and proper technique in a safe, controlled environment.",
-      time: "2 Hours",
-      price: "From LKR 15,000 / $45 USD",
-      isPopular: true,
-      includes: ["Professional Instructor", "Surfboard", "Rash Guard", "Basic Theory"]
-    },
-    {
-      title: "Intermediate Surf Coaching",
-      description: "Take your surfing to the next level with personalized coaching on wave selection, technique refinement, and advanced maneuvers.",
-      time: "3 Hours",
-      price: "From LKR 25,000 / $75 USD",
-      isPopular: false,
-      includes: ["Advanced Coaching", "Video Analysis", "Equipment Included"]
-    },
-    {
-      title: "Private Surf Lesson",
-      description: "One-on-one instruction tailored to your skill level and goals. Perfect for focused learning and rapid improvement.",
-      time: "2 Hours",
-      price: "From LKR 30,000 / $90 USD",
-      isPopular: false,
-      includes: ["Private Instructor", "Customized Program", "All Equipment"]
-    }
-  ];
-
   return (
-    <div className="relative">
-      {/* Hero Section */}
-      <section className="relative h-screen w-full">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/hero-surf.jpg"
-            alt="Surfing waves"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/40" />
-        </div>
-        
-        <div className="relative h-full flex items-center justify-center text-center px-4">
-          <div className="max-w-4xl mx-auto" data-aos="fade-up">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              Experience the Perfect Wave
-            </h1>
-            <p className="text-xl md:text-2xl text-white/90 mb-8">
-              Professional surf lessons and unforgettable adventures
-            </p>
-            <Link
-              href="/lessons"
-              className="inline-block bg-white text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors duration-200"
-            >
-              Book Your Lesson
-            </Link>
-          </div>
+    <div>
+      {/* Hero */}
+      <section className="relative isolate flex min-h-[calc(100vh-5rem)] items-center overflow-hidden">
+        <Image src="/images/hero-surf.jpg" alt="Surfing waves" fill className="-z-10 object-cover" priority />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-slate-900/50 via-slate-900/30 to-slate-900/60" />
+
+        <div className="container-custom text-center" data-aos="fade-up">
+          <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-sky-200">
+            Surf lessons in Unawatuna
+          </p>
+          <h1 className="mx-auto mb-4 max-w-3xl text-4xl font-semibold text-white md:text-5xl">
+            Experience the perfect wave
+          </h1>
+          <p className="mx-auto mb-8 max-w-xl text-base text-sky-50/90 md:text-lg">
+            Professional surf lessons and unforgettable adventures for every level.
+          </p>
+          <Link href="/lessons" className="btn-primary !bg-white !text-sky-700 hover:!bg-sky-50 !px-7 !py-3">
+            Book your lesson
+          </Link>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12" data-aos="fade-up">
-            Why Choose Us
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Feature cards */}
-            <div className="p-6 rounded-lg bg-gray-50" data-aos="fade-up" data-aos-delay="100">
-              <h3 className="text-xl font-semibold mb-4">Expert Instructors</h3>
-              <p className="text-gray-600">
-                Learn from certified professionals with years of experience
-              </p>
-            </div>
-            <div className="p-6 rounded-lg bg-gray-50" data-aos="fade-up" data-aos-delay="200">
-              <h3 className="text-xl font-semibold mb-4">Perfect Location</h3>
-              <p className="text-gray-600">
-                Beautiful beaches with ideal conditions for all skill levels
-              </p>
-            </div>
-            <div className="p-6 rounded-lg bg-gray-50" data-aos="fade-up" data-aos-delay="300">
-              <h3 className="text-xl font-semibold mb-4">Quality Equipment</h3>
-              <p className="text-gray-600">
-                Top-notch surfboards and gear provided for all lessons
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Lessons Section */}
-      <section id="lessons" className="section-padding bg-gray-50">
+      {/* Features */}
+      <section className="section-padding bg-white">
         <div className="container-custom">
-          <h2
-            className="section-title text-center mb-12"
-            data-aos="fade-up"
-          >
-            Our Surf Lessons
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <h2 className="section-title" data-aos="fade-up">Why choose us</h2>
+          <p className="section-subtitle" data-aos="fade-up">
+            Everything you need for a safe, enjoyable day on the water.
+          </p>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {features.map(({ icon: Icon, title, text }, i) => (
+              <div
+                key={title}
+                className="rounded-xl border border-sky-100 bg-white p-6"
+                data-aos="fade-up"
+                data-aos-delay={i * 100}
+              >
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-sky-50 text-sky-600">
+                  <Icon size={18} />
+                </div>
+                <h3 className="mb-2 font-semibold text-slate-900">{title}</h3>
+                <p className="text-sm text-slate-500">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Lessons */}
+      <section id="lessons" className="section-padding border-t border-sky-100 bg-sky-50/40">
+        <div className="container-custom">
+          <h2 className="section-title" data-aos="fade-up">Our surf lessons</h2>
+          <p className="section-subtitle" data-aos="fade-up">
+            Choose the session that matches your experience.
+          </p>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {surfLessons.map((lesson, index) => (
               <div
-                key={index}
-                className="card p-6"
+                key={lesson.title}
+                className="card flex flex-col p-6"
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
-                <div className="space-y-4">
-                  {lesson.isPopular && (
-                    <span className="bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full inline-block">
-                      ⭐ Most Popular
-                    </span>
-                  )}
-                  <h3 className="text-2xl font-bold text-gray-900">{lesson.title}</h3>
-                  <p className="text-gray-600">{lesson.description}</p>
-                  <div className="border-t pt-4 space-y-3">
-                    <p className="flex items-center gap-2">
-                      <span className="font-semibold">🕒 Duration:</span>
-                      <span>{lesson.time}</span>
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <span className="font-semibold">💰 Price:</span>
-                      <span>{lesson.price}</span>
-                    </p>
-                    <div className="mt-4">
-                      <h4 className="font-semibold text-gray-800 mb-2">Includes:</h4>
-                      <ul className="space-y-1">
-                        {lesson.includes.map((item, idx) => (
-                          <li key={idx} className="flex items-center gap-2 text-sm text-gray-600">
-                            <span className="text-green-500">✓</span> {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                {lesson.isPopular && (
+                  <span className="mb-4 inline-flex w-fit rounded-full bg-sky-100 px-3 py-1 text-xs font-medium text-sky-700">
+                    Most popular
+                  </span>
+                )}
+                <h3 className="mb-2 text-lg font-semibold text-slate-900">{lesson.title}</h3>
+                <p className="mb-5 text-sm text-slate-500">{lesson.description}</p>
+
+                <dl className="mb-5 space-y-2 border-t border-sky-100 pt-4 text-sm">
+                  <div className="flex justify-between">
+                    <dt className="text-slate-500">Duration</dt>
+                    <dd className="font-medium text-slate-800">{lesson.time}</dd>
                   </div>
-                  <div className="pt-4">
-                    <Link
-                      href={`/lessons`}
-                      className="w-full inline-flex justify-center items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300"
-                    >
-                      Book This Lesson
-                    </Link>
+                  <div className="flex justify-between gap-4">
+                    <dt className="text-slate-500">Price</dt>
+                    <dd className="text-right font-medium text-slate-800">{lesson.price}</dd>
                   </div>
-                </div>
+                </dl>
+
+                <ul className="mb-6 space-y-2 text-sm text-slate-600">
+                  {lesson.includes.map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-sky-400" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+
+                <Link href="/lessons" className="btn-secondary mt-auto w-full">
+                  Book this lesson
+                </Link>
               </div>
             ))}
           </div>
@@ -179,4 +157,4 @@ export default function Home() {
       </section>
     </div>
   );
-} 
+}

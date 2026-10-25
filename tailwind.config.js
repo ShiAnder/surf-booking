@@ -8,33 +8,14 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        custom: ['Roboto', 'sans-serif'],
+        sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
       },
-      screens: {
-        ...require('tailwindcss/defaultTheme').screens,
-        md: '1024px', // override only this
-      },
+      // Palette: white surfaces, slate text, and one light-blue accent (sky).
       colors: {
         primary: '#0ea5e9',
-        secondary: '#0f172a',
-        'brand-blue': {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-        },
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        ink: '#1e293b',
       },
     },
   },
   plugins: [],
-}
+};

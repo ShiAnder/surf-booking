@@ -15,8 +15,8 @@ interface ButtonLinkProps {
 const ButtonLink = ({ href, children, variant = 'primary' }: ButtonLinkProps) => {
   const baseClasses = 'px-6 py-2 rounded text-center transition font-medium';
   const variantClasses = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700',
-    secondary: 'border border-blue-500 text-blue-500 hover:bg-blue-50',
+    primary: 'bg-sky-500 text-white hover:bg-sky-600',
+    secondary: 'border border-sky-500 text-sky-500 hover:bg-sky-50',
   } as const;
 
   return (
@@ -37,28 +37,28 @@ interface StatusWrapperProps {
 const StatusWrapper = ({ children, icon, title, statusType }: StatusWrapperProps) => {
   const statusStyles = {
     loading: {
-      bgColor: 'bg-blue-50',
-      borderColor: 'border-blue-200',
-      textColor: 'text-blue-800',
-      iconColor: 'text-blue-500',
+      bgColor: 'bg-sky-50',
+      borderColor: 'border-sky-200',
+      textColor: 'text-sky-800',
+      iconColor: 'text-sky-500',
     },
     processing: {
-      bgColor: 'bg-yellow-50',
-      borderColor: 'border-yellow-200',
-      textColor: 'text-yellow-700',
-      iconColor: 'text-yellow-500',
+      bgColor: 'bg-slate-50',
+      borderColor: 'border-slate-200',
+      textColor: 'text-slate-700',
+      iconColor: 'text-sky-400',
     },
     error: {
-      bgColor: 'bg-red-50',
-      borderColor: 'border-red-200',
-      textColor: 'text-red-600',
-      iconColor: 'text-red-500',
+      bgColor: 'bg-slate-50',
+      borderColor: 'border-slate-200',
+      textColor: 'text-slate-600',
+      iconColor: 'text-slate-500',
     },
     success: {
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200',
-      textColor: 'text-green-800',
-      iconColor: 'text-green-600',
+      bgColor: 'bg-sky-50',
+      borderColor: 'border-sky-200',
+      textColor: 'text-sky-800',
+      iconColor: 'text-sky-600',
     },
   } as const;
 
@@ -66,11 +66,11 @@ const StatusWrapper = ({ children, icon, title, statusType }: StatusWrapperProps
 
   return (
     <div className="container mx-auto px-4 py-10 text-center">
-      <div className={`${style.bgColor} border ${style.borderColor} rounded-2xl p-8 max-w-xl mx-auto shadow-md`}>
+      <div className={`${style.bgColor} border ${style.borderColor} rounded-2xl p-8 max-w-xl mx-auto shadow-sm`}>
         <div className="flex justify-center mb-4">
           {React.cloneElement(icon, { className: `w-12 h-12 ${style.iconColor}` })}
         </div>
-        <h1 className={`text-2xl font-bold ${style.textColor} mb-4`}>{title}</h1>
+        <h1 className={`text-xl font-semibold ${style.textColor} mb-4`}>{title}</h1>
         {children}
         <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
           <ButtonLink href="/bookings">View All Bookings</ButtonLink>
@@ -149,7 +149,7 @@ function BookingSuccessContent() {
         title="Processing Your Booking"
         statusType="loading"
       >
-        <p className="text-gray-700">Loading booking details...</p>
+        <p className="text-slate-700">Loading booking details...</p>
       </StatusWrapper>
     );
   }
@@ -161,7 +161,7 @@ function BookingSuccessContent() {
         title="Payment Successful"
         statusType="processing"
       >
-        <p className="text-yellow-700">{processingMessage}</p>
+        <p className="text-slate-700">{processingMessage}</p>
       </StatusWrapper>
     );
   }
@@ -173,7 +173,7 @@ function BookingSuccessContent() {
         title="Something Went Wrong"
         statusType="error"
       >
-        <p className="text-red-600">{error}</p>
+        <p className="text-slate-600">{error}</p>
       </StatusWrapper>
     );
   }
@@ -185,37 +185,37 @@ function BookingSuccessContent() {
         title="No Booking Found"
         statusType="error"
       >
-        <p className="text-red-600">There was an issue retrieving your booking details.</p>
+        <p className="text-slate-600">There was an issue retrieving your booking details.</p>
       </StatusWrapper>
     );
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-      <div className="flex flex-col items-center justify-center bg-white w-full max-w-[900px] h-auto md:h-[600px] p-4 shadow-lg rounded-xl">
-        <div className="bg-green-50 border border-green-200 rounded-2xl p-8 w-full max-w-xl text-center shadow-md">
+    <div className="flex items-center justify-center min-h-screen bg-sky-50 px-4">
+      <div className="flex flex-col items-center justify-center bg-white w-full max-w-[900px] h-auto md:h-[600px] p-4 shadow-sm rounded-xl">
+        <div className="bg-sky-50 border border-sky-200 rounded-2xl p-8 w-full max-w-xl text-center shadow-sm">
           <div className="flex justify-center mb-4">
-            <CheckCircle className="h-12 w-12 text-green-600" />
+            <CheckCircle className="h-12 w-12 text-sky-600" />
           </div>
 
-          <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4 shadow-inner">
-            <h2 className="text-blue-800 font-semibold mb-2">Need Directions?</h2>
-            <p className="text-sm text-blue-700">
+          <div className="mt-6 bg-sky-50 border border-sky-200 rounded-lg p-4 shadow-inner">
+            <h2 className="text-sky-800 font-semibold mb-2">Need Directions?</h2>
+            <p className="text-sm text-sky-700">
               Get directions to the lesson location:&nbsp;
               <a
                 href="https://www.google.com/maps/dir//420%2F5+Matara+Rd,+Galle+80000/@6.0334405,80.1545353,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3ae17305763efe21:0xfa58be40ead61503!2m2!1d80.2369372!2d6.0334467?entry=ttu"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 underline hover:text-blue-800 font-medium"
+                className="text-sky-600 underline hover:text-sky-800 font-medium"
               >
                 420/5 Matara Rd, Galle 80000
               </a>
             </p>
           </div>
 
-          <h1 className="text-2xl font-bold text-green-800 mb-4">Booking Confirmed!</h1>
+          <h1 className="text-xl font-semibold text-sky-800 mb-4">Booking Confirmed!</h1>
 
-          <div className="text-center text-gray-700 mb-6 space-y-2">
+          <div className="text-center text-slate-700 mb-6 space-y-2">
             {booking.lesson && (
               <>
                 <p><span className="font-semibold">Lesson:</span> {booking.lesson.title}</p>
@@ -244,7 +244,7 @@ function BookingSuccessContent() {
 // Exported page with Suspense
 export default function BookingSuccessPage() {
   return (
-    <Suspense fallback={<div className="text-center py-10 text-gray-500">Loading booking page...</div>}>
+    <Suspense fallback={<div className="text-center py-10 text-slate-500">Loading booking page...</div>}>
       <BookingSuccessContent />
     </Suspense>
   );

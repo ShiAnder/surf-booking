@@ -4,17 +4,11 @@ import "./globals.css";
 import 'aos/dist/aos.css';
 import AOSInit from '@/components/ui/AOSInit';
 import { ReactNode } from 'react';
-import { Poppins } from 'next/font/google';
 import { NextAuthProvider } from '../components/auth/NextAuthProvider';
 import Header from '../components/ui/Header';
 import Footer from '../components/ui/Footer';
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-
-const poppins = Poppins({ 
-  weight: ['300', '400', '500', '600', '700', '800'],
-  subsets: ['latin'] 
-});
 
 export const metadata: Metadata = {
   title: "Surf Booking - Your Premier Surf Lesson Booking Platform",
@@ -28,11 +22,12 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.variable} font-sans ${poppins.className} min-h-screen bg-gradient-to-br from-teal-50 to-blue-50`}>
+      <body className={`${inter.variable} font-sans min-h-screen bg-white`}>
         <AOSInit />
         <NextAuthProvider>
           <Header />
-          <main className="min-h-screen pt-24">
+          {/* Header is a fixed 80px bar; pages start below it. */}
+          <main className="min-h-screen pt-20">
             {children}
           </main>
           <Footer />
@@ -40,4 +35,4 @@ export default function RootLayout({ children }: RootLayoutProps) {
       </body>
     </html>
   );
-} 
+}

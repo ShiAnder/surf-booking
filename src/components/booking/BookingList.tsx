@@ -22,9 +22,9 @@ interface BookingListProps {
 }
 
 const statusColors = {
-  pending: 'bg-yellow-100 text-yellow-800',
-  confirmed: 'bg-green-100 text-green-800',
-  cancelled: 'bg-red-100 text-red-800',
+  pending: 'bg-slate-100 text-slate-700',
+  confirmed: 'bg-sky-100 text-sky-800',
+  cancelled: 'bg-slate-200 text-slate-500 line-through',
 };
 
 const statusLabels = {
@@ -48,8 +48,8 @@ export default function BookingList({ bookings }: BookingListProps) {
           onClick={() => setFilter('all')}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
             filter === 'all' 
-              ? 'bg-blue-600 text-white' 
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-sky-500 text-white' 
+              : 'bg-sky-50 text-slate-700 hover:bg-sky-100'
           }`}
         >
           All
@@ -58,8 +58,8 @@ export default function BookingList({ bookings }: BookingListProps) {
           onClick={() => setFilter('pending')}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
             filter === 'pending' 
-              ? 'bg-yellow-400 text-yellow-900' 
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-slate-200 text-slate-800' 
+              : 'bg-sky-50 text-slate-700 hover:bg-sky-100'
           }`}
         >
           Pending
@@ -68,8 +68,8 @@ export default function BookingList({ bookings }: BookingListProps) {
           onClick={() => setFilter('confirmed')}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
             filter === 'confirmed' 
-              ? 'bg-green-500 text-white' 
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-sky-500 text-white' 
+              : 'bg-sky-50 text-slate-700 hover:bg-sky-100'
           }`}
         >
           Confirmed
@@ -78,8 +78,8 @@ export default function BookingList({ bookings }: BookingListProps) {
           onClick={() => setFilter('cancelled')}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
             filter === 'cancelled' 
-              ? 'bg-red-500 text-white' 
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-slate-500 text-white' 
+              : 'bg-sky-50 text-slate-700 hover:bg-sky-100'
           }`}
         >
           Cancelled
@@ -91,28 +91,28 @@ export default function BookingList({ bookings }: BookingListProps) {
         {filteredBookings.map((booking) => (
           <div
             key={booking.id}
-            className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+            className="bg-white rounded-lg shadow-sm p-6 hover:shadow-sm transition-shadow"
           >
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="space-y-2">
-                <h3 className="text-xl font-semibold text-gray-900">
+                <h3 className="text-xl font-semibold text-slate-900">
                   {booking.lesson.title}
                 </h3>
-                <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                <div className="flex flex-wrap gap-4 text-sm text-slate-500">
                   <div className="flex items-center gap-2">
-                    <FaCalendarAlt className="text-blue-500" />
+                    <FaCalendarAlt className="text-sky-500" />
                     <span>{new Date(booking.date).toLocaleDateString()}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <FaClock className="text-blue-500" />
+                    <FaClock className="text-sky-500" />
                     <span>{booking.time}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <FaDollarSign className="text-blue-500" />
+                    <FaDollarSign className="text-sky-500" />
                     <span>${booking.lesson.price}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <FaBookOpen className="text-blue-500" />
+                    <FaBookOpen className="text-sky-500" />
                     <span>{booking.lesson.duration}</span>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ export default function BookingList({ bookings }: BookingListProps) {
 
       {filteredBookings.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">
+          <p className="text-slate-500 text-lg">
             {filter === 'all' 
               ? 'No bookings found.' 
               : `No ${filter} bookings found.`}
